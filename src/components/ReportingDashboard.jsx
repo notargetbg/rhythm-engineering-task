@@ -1,5 +1,4 @@
 import React from 'react';
-// import './styles/app.scss';
 
 class ReportingDashboard extends React.Component {
 		
