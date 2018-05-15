@@ -5,8 +5,16 @@
 .chart {
     border: 1px solid #e8e8e8;
     padding: 10px;
+    display: inline-block;
+    text-align: center;
+
+    .chart-title {
+        margin-bottom: 20px;
+        font-size: 18px;
+        text-transform: capitalize;
+    }
 
     .input-group {
-        margin-bottom: 10px;
+        margin: 0 auto 10px;        
     }
 }
