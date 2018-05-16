@@ -2,19 +2,54 @@
     color: #353232;
 }
 
+.charts-container {
+    max-width: 1600px;
+    margin: 50px auto;
+}
+
 .chart {
     border: 1px solid #e8e8e8;
     padding: 10px;
     display: inline-block;
     text-align: center;
 
+    rect {
+        fill: #e8e8e8;
+    }
+
     .chart-title {
-        margin-bottom: 20px;
+        margin: 10px 0;
         font-size: 18px;
         text-transform: capitalize;
     }
 
-    .input-group {
-        margin: 0 auto 10px;        
+    .bar {
+        transition: opacity .2s, transform .2s;
+
+        &:hover {
+            opacity: 0.75;
+            transform: translateY(-6px);
+        }
     }
+
+    .input-group {
+        margin: 0 auto;        
+    }
+}
+
+// Navbar
+.navbar {
+
+    .dropdown.has-thumbnail {
+        .dropdown-toggle {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+    }
+    .image-thumbnail {
+        max-width: 34px;
+        margin-right: 6px;
+        border-radius: 4px;
+    }   
+    
 }
