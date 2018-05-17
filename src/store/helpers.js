@@ -1,7 +1,18 @@
-export function getColumnNames(data) {
-	return Object.keys(data).filter(x => x !== 'year');
+export function getColumnNames(data, exclude = '') {
+	return Object.keys(data).filter(x => x !== exclude);
 }
 
 export function formatColumnName(data) {
 	return data.split('_').join(' ');
+}
+
+export function getDimensions(width, height) {
+	return {
+		top: 30,
+		right: 20,
+		bottom: 20,
+		left: 50,
+		innerWidth: width - 80,
+		innerHeight: height - 60
+	};
 }

@@ -1,0 +1,74 @@
+{
+    "name": "Weather Conditions",
+    "table": {
+        "types_of_weather": [
+            {
+                "type": "clear",
+                "total_number_of_crashes": 110051,
+                "fatal_crashes": 694,
+                "injury_crashes":  33670
+            },
+            {
+                "type": "cloudy",
+                "total_number_of_crashes": 10956,
+                "fatal_crashes": 78,
+                "injury_crashes":  3389
+            },
+            {
+                "type": "sleet/hail",
+                "total_number_of_crashes": 159,
+                "fatal_crashes": 2,
+                "injury_crashes": 42
+            },
+            {
+                "type": "rain",
+                "total_number_of_crashes": 4357,
+                "fatal_crashes": 20,
+                "injury_crashes":  1219
+            },
+            {
+                "type": "snow",
+                "total_number_of_crashes": 572,
+                "fatal_crashes": 1,
+                "injury_crashes": 97
+            },
+            {
+                "type": "severe crosswinds",
+                "total_number_of_crashes": 87,
+                "fatal_crashes": 0,
+                "injury_crashes": 32
+            },
+            {
+                "type": "blowing sand, soil, dirt",
+                "total_number_of_crashes": 105,
+                "fatal_crashes": 1,
+                "injury_crashes": 33
+            },
+            {
+                "type": "fog, smog, smoke",
+                "total_number_of_crashes": 42,
+                "fatal_crashes": 2,
+                "injury_crashes": 11
+            },
+            {
+                "type": "blowing snow",
+                "total_number_of_crashes": 21,
+                "fatal_crashes": 0,
+                "injury_crashes": 6
+            },
+            {
+                "type": "other",
+                "total_number_of_crashes": 83,
+                "fatal_crashes": 0,
+                "injury_crashes": 23
+            },
+            {
+                "type": "unknown",
+                "total_number_of_crashes": 554,
+                "fatal_crashes": 58,
+                "injury_crashes": 94
+            }
+        ],
+        "total_count": 126987
+    }    
+}

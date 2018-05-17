@@ -9,9 +9,11 @@
 
 .chart {
     border: 1px solid #e8e8e8;
+    box-shadow: -2px 2px 3px 0px rgba(188, 188, 188, .25);
     padding: 10px;
     display: inline-block;
     text-align: center;
+    margin: 10px;
 
     rect {
         fill: #e8e8e8;

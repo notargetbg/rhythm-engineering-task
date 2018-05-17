@@ -1,13 +1,13 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { getColumnNames, formatColumnName } from '../../store/helpers';
+import { getColumnNames, formatColumnName, getDimensions } from '../../store/helpers';
 import ChartTitle from './ChartTitle';
 
 class BarChart extends React.Component {
     constructor(props){
         super(props); 
 
-        const columns = getColumnNames(this.props.data.table[0]);
+        const columns = getColumnNames(this.props.data.table[0], props.activeCategory);
         const tableData = props.data.table.map((x) => {
             return {
                 category: x[props.activeCategory],
@@ -19,45 +19,38 @@ class BarChart extends React.Component {
             tableData,
             columns,
             activeColumn: columns[0],
-            dm: {
-                top: 30,
-                right: 20,
-                bottom: 20,
-                left: 50,
-                innerWidth: props.size[0] - 80,
-                innerHeight: props.size[1] - 60
-            }
+            dm: getDimensions(props.size[0], props.size[1])
         };
     }
 
     componentDidMount() {
         const { dm } = this.state;
         const { yAxis, xAxis } = this.getScalesAndAxes();
-        this.svg = d3.select(this.svgContainerEl);
+        const svgContainer = d3.select(this.svgContainerEl);
 
-        this.svg.append('g')
+        svgContainer.append('g')
         .attr('class', 'chart-inner')
         .attr('width', dm.innerWidth)
         .attr('height', dm.innerHeight)
-        .attr('transform', `translate(${dm.left},${dm.top})`);
+        .attr('transform', `translate(${dm.left},${dm.top})`);       
 
-         this.svg
+        svgContainer
             .append('g')
             .attr('class', 'axis axis--y')
             .attr('transform', `translate(${dm.left},${dm.top})`)
             .call(yAxis);
 
-        this.svg
+        svgContainer
             .append('g')
             .attr('class', 'axis axis--x')
             .attr('transform', `translate(${dm.left},${dm.top + dm.innerHeight})`)
             .call(xAxis);
 
-        this.updateBarChart();
+        this.updateChart();
     }
 
     componentDidUpdate() {
-        this.updateBarChart();
+        this.updateChart();
     }
 
     getScalesAndAxes = () => {
@@ -96,16 +89,22 @@ class BarChart extends React.Component {
         });
     }
 
-    updateBarChart = () => {
+    updateChart = () => {
         const { dm, tableData } = this.state;
         const { yAxis, yScale, xAxis, xScale } = this.getScalesAndAxes();
+        const svgContainer = d3.select(this.svgContainerEl);
 
-        const bars = this.svg.select('.chart-inner')
+        const bars = svgContainer.select('.chart-inner')
             .selectAll('rect')
-            .data(tableData, item => item.data);
+            .data(tableData, item => item.data);            
 
         bars.enter()
             .append('rect')
+            // Todo move this, add proper logic
+            // Perhaps use redux in order to display the data in a separate component...
+            .on('mouseover', (d) => {
+                console.log(d);
+            })
             .transition(t)
             .style('fill', '#fe9922')
             .attr('class', 'bar')
@@ -117,7 +116,7 @@ class BarChart extends React.Component {
         bars.exit()
             .remove();
 
-        const barLabels = this.svg.select('.chart-inner')
+        const barLabels = svgContainer.select('.chart-inner')
             .selectAll('text')
             .data(tableData, item => item.data);          
 
@@ -137,15 +136,15 @@ class BarChart extends React.Component {
             .exit()
             .remove();
             
-        var t = d3.transition().duration(300);        
-        this.svg.select('.axis--x').transition(t).call(xAxis);
-        this.svg.select('.axis--y').transition(t).call(yAxis);
+        const t = d3.transition().duration(300);        
+        svgContainer.select('.axis--x').transition(t).call(xAxis);
+        svgContainer.select('.axis--y').transition(t).call(yAxis);
 
-    }        
+    }
 
     render() {
         const [ sizeW, sizeH ] = this.props.size;
-        const columns = getColumnNames(this.props.data.table[0]);
+        const columns = getColumnNames(this.props.data.table[0], this.props.activeCategory);
         const chartTitle = `${formatColumnName(this.state.activeColumn)} by ${this.props.activeCategory}`;
 
         return (
