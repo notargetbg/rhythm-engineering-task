@@ -16,7 +16,7 @@ class ReportingDashboard extends React.Component {
 				</div>
 				<div className='charts-container'>
 					<BarChart data={alcohol_related_crash_history} activeCategory='year' size={[400,300]} />
-					<PieChart data={weather_conditions} chartTitle='Total Crashes by Weather Condition' size={[400,300]} />
+					<PieChart data={weather_conditions} chartTitle='Total Crashes by Weather Condition' activeCategory='type' size={[400,300]} />
 				</div>
 			</div>
 		);

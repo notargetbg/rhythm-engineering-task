@@ -16,3 +16,12 @@ export function getDimensions(width, height) {
 		innerHeight: height - 60
 	};
 }
+
+export function transformTableData(data, category, column) {
+	return data.map((x) => {
+		return {
+			category: x[category],
+			data: x[column]
+		};
+	});
+}

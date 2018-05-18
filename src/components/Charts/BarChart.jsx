@@ -1,24 +1,16 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { getColumnNames, formatColumnName, getDimensions } from '../../store/helpers';
+import { getColumnNames, formatColumnName, getDimensions, transformTableData } from '../../store/helpers';
 import ChartTitle from './ChartTitle';
+import ChartSelect from './ChartSelect';
 
 class BarChart extends React.Component {
     constructor(props){
-        super(props); 
-
-        const columns = getColumnNames(this.props.data.table[0], props.activeCategory);
-        const tableData = props.data.table.map((x) => {
-            return {
-                category: x[props.activeCategory],
-                data: x[columns[0]]
-            };
-        });
+        super(props);
+        const columnNames = getColumnNames(props.data.table[0], props.activeCategory);
 
         this.state = {
-            tableData,
-            columns,
-            activeColumn: columns[0],
+            activeColumn: columnNames[0],
             dm: getDimensions(props.size[0], props.size[1])
         };
     }
@@ -32,7 +24,7 @@ class BarChart extends React.Component {
         .attr('class', 'chart-inner')
         .attr('width', dm.innerWidth)
         .attr('height', dm.innerHeight)
-        .attr('transform', `translate(${dm.left},${dm.top})`);       
+        .attr('transform', `translate(${dm.left},${dm.top})`);
 
         svgContainer
             .append('g')
@@ -54,14 +46,17 @@ class BarChart extends React.Component {
     }
 
     getScalesAndAxes = () => {
-        const { dm, tableData } = this.state;
+        const { data, activeCategory } = this.props;
+        const { dm, activeColumn } = this.state;
+
+        const tableData = data.table;
 
         const yScale = d3.scaleLinear()
-            .domain([0, d3.max(tableData.map((item) => item.data))])
+            .domain([0, d3.max(tableData.map((item) => item[activeColumn]))])
             .range([dm.innerHeight, 0]);
 
         const xScale = d3.scaleBand()
-            .domain(tableData.map(item => item.category))
+            .domain(tableData.map(item => item[activeCategory]))
             .range([0, dm.innerWidth]).padding(0.1);
 
         const yAxis = d3.axisLeft(yScale).ticks(15);
@@ -75,28 +70,23 @@ class BarChart extends React.Component {
         };
     }
 
-    setActiveColumn = (e) => {
-        const tableData = this.props.data.table.map((x) => {
-            return {
-                category: x[this.props.activeCategory],
-                data: x[e.target.value]
-            };
-        });
-        
+    setActiveColumn = (activeColumn) => {
         this.setState({
-            activeColumn: e.target.value,
-            tableData
+            activeColumn
         });
     }
 
     updateChart = () => {
-        const { dm, tableData } = this.state;
+        const { dm, activeColumn } = this.state;
+        const { data, activeCategory } = this.props;
         const { yAxis, yScale, xAxis, xScale } = this.getScalesAndAxes();
         const svgContainer = d3.select(this.svgContainerEl);
+        
+        const tableData = transformTableData(data.table, activeCategory, activeColumn);
 
         const bars = svgContainer.select('.chart-inner')
             .selectAll('rect')
-            .data(tableData, item => item.data);            
+            .data(tableData, item => item.data);
 
         bars.enter()
             .append('rect')
@@ -118,7 +108,7 @@ class BarChart extends React.Component {
 
         const barLabels = svgContainer.select('.chart-inner')
             .selectAll('text')
-            .data(tableData, item => item.data);          
+            .data(tableData, item => item.data);
 
         barLabels
             .enter()
@@ -135,11 +125,10 @@ class BarChart extends React.Component {
         barLabels
             .exit()
             .remove();
-            
-        const t = d3.transition().duration(300);        
+
+        const t = d3.transition().duration(300);
         svgContainer.select('.axis--x').transition(t).call(xAxis);
         svgContainer.select('.axis--y').transition(t).call(yAxis);
-
     }
 
     render() {
@@ -150,13 +139,7 @@ class BarChart extends React.Component {
         return (
             <div className='chart'>
                 <ChartTitle title={chartTitle} />
-                <div className='input-group'>
-					<select onChange={this.setActiveColumn} className='form-control'>
-						{columns.map((x,i) => (
-							<option key={i} value={x}>{formatColumnName(x)}</option>
-						))}
-					</select>
-				</div>
+                <ChartSelect columnsData={columns} handleSelection={this.setActiveColumn} {...this.props} />
                 <svg ref={el => this.svgContainerEl = el}
                     className='bar-chart'
                     width={sizeW} height={sizeH}>
