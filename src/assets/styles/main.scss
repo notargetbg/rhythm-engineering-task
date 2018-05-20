@@ -14,18 +14,22 @@
     display: inline-block;
     text-align: center;
     margin: 10px;
-
-    rect {
-        fill: #e8e8e8;
-    }
-
+    
     .chart-title {
         margin: 10px 0;
         font-size: 18px;
         text-transform: capitalize;
     }
 
+    .chart-line {
+        fill: none;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        stroke-width: 1.5;
+    }
+    
     .bar {
+        fill: #94BADE !important;
         transition: opacity .2s, transform .2s;
 
         &:hover {

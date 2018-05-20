@@ -96,7 +96,6 @@ class BarChart extends React.Component {
                 console.log(d);
             })
             .transition(t)
-            .style('fill', '#fe9922')
             .attr('class', 'bar')
             .attr('x', item => xScale(item.category))
             .attr('y', item => yScale(item.data))

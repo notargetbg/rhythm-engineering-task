@@ -60,7 +60,7 @@ class PieChart extends React.Component {
 
 		const colorScale = d3.scaleLinear().domain([1,tableData.length])
 			.interpolate(d3.interpolateHcl)
-			.range([d3.rgb('#fe9922'), d3.rgb('#c10c0c')]);		
+			.range([d3.rgb('#94bade'), d3.rgb('#dad44f')]);		
 
 		// Arc and Pie generation
 		const pie = d3.pie()

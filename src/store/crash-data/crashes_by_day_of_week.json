@@ -1,0 +1,65 @@
+{
+    "name": "Urban and Rural Crashes by Day of Week",
+    "table": {
+        "urban": [
+            {
+                "day": "MON",
+                "count": 14840
+            },
+            {
+                "day": "TUE",
+                "count": 16515
+            },
+            {
+                "day": "WED",
+                "count": 16339
+            },
+            {
+                "day": "THU",
+                "count": 17122
+            },
+            {
+                "day": "FRI",
+                "count": 18247
+            },
+            {
+                "day": "SAT",
+                "count": 11675
+            },
+            {
+                "day": "SUN",
+                "count": 8601
+            }
+        ],
+        "rural": [
+            {
+                "day": "MON",
+                "count": 3341
+            },
+            {
+                "day": "TUE",
+                "count": 3326
+            },
+            {
+                "day": "WED",
+                "count": 3295
+            },
+            {
+                "day": "THU",
+                "count": 3517
+            },
+            {
+                "day": "FRI",
+                "count": 3921
+            },
+            {
+                "day": "SAT",
+                "count": 3420
+            },
+            {
+                "day": "SUN",
+                "count": 2828
+            }
+        ]
+    }
+}
