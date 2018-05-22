@@ -34,14 +34,23 @@
         stroke-linejoin: round;
         stroke-width: 1.5;
     }
-    
-    .bar {
-        fill: #94BADE !important;
-        transition: opacity .2s, transform .2s;
 
-        &:hover {
-            opacity: 0.75;
-            transform: translateY(-6px);
+    .bar-chart {
+        .bar {
+            fill: #94BADE !important;
+            transition: opacity .2s, transform .2s;
+
+            &:hover {
+                opacity: 0.75;
+                transform: translateY(-6px);
+            }
+        }
+    }
+
+    .bar-chart-vertical {
+        .axis--y text {
+            fill: #383838;
+            font-size: 14px;
         }
     }
 
@@ -55,6 +64,12 @@
     display: flex;
     height: 34px;
     align-items: center;
+
+    &.legend-vertical {        
+        flex-direction: column;
+        height: initial;
+        align-items: flex-start;        
+    }
 
     .legend-block {
         margin: 0 10px;

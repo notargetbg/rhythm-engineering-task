@@ -1,0 +1,32 @@
+{
+    "name": "Lighting Conditions",
+    "table": [
+        {
+            "type": "Daylight",
+            "total": 89847,
+            "fatal": 378,
+            "injury":  27463,
+            "pdo":  62006,
+            "number_of_persons_killed":  428,
+            "number_of_persons_injured":  40305            
+        },
+        {
+            "type": "Dawn",
+            "total": 2208,
+            "fatal": 31,
+            "injury":  631,
+            "pdo":  1546,
+            "number_of_persons_killed":  33,
+            "number_of_persons_injured":  903            
+        },
+        {
+            "type": "Dusk",
+            "total": 3594,
+            "fatal": 22,
+            "injury":  1127,
+            "pdo":  2445,
+            "number_of_persons_killed":  32,
+            "number_of_persons_injured":  1694            
+        }
+    ]  
+}

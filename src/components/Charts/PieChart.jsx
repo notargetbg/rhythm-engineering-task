@@ -84,12 +84,12 @@ class PieChart extends React.Component {
 			.append('g')	
 			.append('path')
 			.on('mouseover', (item) => {
-				d3.select('.inner-text').text(item.value);
-				d3.select('.inner-text2').text(item.data.category);
+				svgContainer.select('.inner-text').text(item.value);
+				svgContainer.select('.inner-text2').text(item.data.category);
 			})
 			.on('mouseout', () => {
-				d3.select('.inner-text').text('count');
-				d3.select('.inner-text2').text('type');
+				svgContainer.select('.inner-text').text('count');
+				svgContainer.select('.inner-text2').text('type');
 			})
 			.attr('fill', (item, i) => colorScale(i))
 			.attr('d', arcPath)

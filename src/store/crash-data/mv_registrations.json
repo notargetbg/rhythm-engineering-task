@@ -1,0 +1,21 @@
+{
+    "name": "Motor Vehicle Registrations",
+    "table": [
+        {
+            "type": "Privately Owned Vehicles",
+            "count": 4944715
+        },
+        {
+            "type": "Commercial Vehicles",
+            "count": 525385
+        },
+        {
+            "type": "Motorcycles",
+            "count": 203498
+        },
+        {
+            "type": "TOTAL",
+            "count": 5677208
+        }
+    ]  
+}

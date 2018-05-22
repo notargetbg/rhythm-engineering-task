@@ -8,6 +8,9 @@ import alcohol_related_crash_history from '../../store/crash-data/alcohol_relate
 import weather_conditions from '../../store/crash-data/weather_conditions.json';
 import crashes_by_day_of_week from '../../store/crash-data/crashes_by_day_of_week.json';
 import crash_history from '../../store/crash-data/crash_history.json';
+import lighting_conditions from '../../store/crash-data/lighting_conditions.json';
+import mv_registrations from '../../store/crash-data/mv_registrations.json';
+import BarChartVertical from './BarChartVertical';
 
 class ChartDataTransformer extends React.Component {
 
@@ -56,8 +59,8 @@ class ChartDataTransformer extends React.Component {
                 <div className='chart-summary'>
                     Summary
                 </div>
-                <PieChart data={weather_conditions} chartTitle='Total Crashes by Weather Condition' activeCategory='type' size={[350,300]} />
-                <BarChart data={alcohol_related_crash_history} activeCategory='year' size={[350,300]} />
+                <PieChart data={lighting_conditions} chartTitle='Total Crashes by Lighting Condition' activeCategory='type' size={[350,300]} />
+                <BarChartVertical data={mv_registrations} activeCategory='type' size={[350,250]} />
                 <LineChart data={crash_history} chartTitle={crash_history.name} activeCategory='year' activeColumn='count' size={[750,300]} />
             </div>
         );
