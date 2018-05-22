@@ -95,6 +95,10 @@
     text-align: center;
     margin: 10px;
     min-width: 23%;
+
+    .item-category, .item-value {
+        margin: 0 10px;
+    }
 }
 
 // Navbar

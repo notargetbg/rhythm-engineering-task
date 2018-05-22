@@ -1,8 +1,13 @@
 import React from 'react';
 import * as d3 from 'd3';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions';
+
 import BarChart from './BarChart';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
+import SummaryTable from '../SummaryTable';
+import { transformFromStrToDate } from '../../store/helpers';
 
 import alcohol_related_crash_history from '../../store/crash-data/alcohol_related_crash_history.json';
 import weather_conditions from '../../store/crash-data/weather_conditions.json';
@@ -13,9 +18,12 @@ import mv_registrations from '../../store/crash-data/mv_registrations.json';
 import BarChartVertical from './BarChartVertical';
 
 class ChartDataTransformer extends React.Component {
-
-    componentDidMount() {
-        
+    constructor(props) {
+        super(props);
+        // Transforming and mutating years to dates
+        transformFromStrToDate(crash_history.table, 'year', this.parseYear);
+        // Transforming and mutating days to dates
+        transformFromStrToDate(crashes_by_day_of_week.table, 'day', this.parseShortWeekDay);
     }
 
     parseShortWeekDay = (day) => {
@@ -28,27 +36,14 @@ class ChartDataTransformer extends React.Component {
         return parseDate(year);
     }
 
+    addSummary = (data) => {
+        this.props.dispatch(actions.addSummaryData(data));
+    }
+
     render() {
-
-        // Transforming years to dates
-        Object.keys(crash_history.table).forEach((key, i) => {
-            crash_history.table[key] = crash_history.table[key].map(x => {
-                x.year = this.parseYear(x.year);
-                return x;
-            });
-        });
-
-        // Transforming days to dates
-        Object.keys(crashes_by_day_of_week.table).forEach((key, i) => {
-            crashes_by_day_of_week.table[key] = crashes_by_day_of_week.table[key].map(x => {
-                x.day = this.parseShortWeekDay(x.day);
-                return x;
-            });
-        });
-
         return (
             <div className='charts-container'>
-                <BarChart data={alcohol_related_crash_history} activeCategory='year' size={[350,300]} />
+                <BarChart handleAddSummary={this.addSummary} data={alcohol_related_crash_history} activeCategory='year' size={[350,300]} />
                 <PieChart data={weather_conditions} chartTitle='Total Crashes by Weather Condition' activeCategory='type' size={[350,300]} />
                 <LineChart data={crashes_by_day_of_week}
                     chartTitle={crashes_by_day_of_week.name}
@@ -56,9 +51,7 @@ class ChartDataTransformer extends React.Component {
                     activeColumn='count'
                     size={[350,300]}
                 />
-                <div className='chart-summary'>
-                    Summary
-                </div>
+                <SummaryTable summary={this.props.summary} />
                 <PieChart data={lighting_conditions} chartTitle='Total Crashes by Lighting Condition' activeCategory='type' size={[350,300]} />
                 <BarChartVertical data={mv_registrations} activeCategory='type' size={[350,250]} />
                 <LineChart data={crash_history} chartTitle={crash_history.name} activeCategory='year' activeColumn='count' size={[750,300]} />
@@ -66,4 +59,11 @@ class ChartDataTransformer extends React.Component {
         );
     }
 }
-export default ChartDataTransformer;
+
+const mapStateToProps = (state) => {
+    return { 
+		summary: state.summary.data
+    };
+};
+
+export default connect(mapStateToProps)(ChartDataTransformer);

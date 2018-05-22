@@ -76,6 +76,24 @@ class BarChart extends React.Component {
         });
     }
 
+    addSummaryData = () => {
+        const { data, activeCategory } = this.props;
+        const summaryData = data.table.map(item => {
+            return {
+                category: item[activeCategory],
+                columnData: item[this.state.activeColumn]
+            }; 
+        });
+
+        const summary = {
+            activeCategory: [activeCategory],
+            activeColumn: this.state.activeColumn,
+            summaryData
+        };
+
+        this.props.handleAddSummary(summary);
+    }
+
     updateChart = () => {
         const { dm, activeColumn } = this.state;
         const { data, activeCategory } = this.props;
@@ -136,7 +154,7 @@ class BarChart extends React.Component {
         const chartTitle = `${formatColumnName(this.state.activeColumn)} by ${this.props.activeCategory}`;
 
         return (
-            <div className='chart'>
+            <div className='chart' onClick={this.addSummaryData}>
                 <ChartTitle title={chartTitle} />
                 <ChartSelect columnsData={columns} handleSelection={this.setActiveColumn} {...this.props} />
                 <svg ref={el => this.svgContainerEl = el}

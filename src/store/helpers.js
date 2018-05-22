@@ -3,7 +3,7 @@ export function getColumnNames(data, exclude = '') {
 }
 
 export function formatColumnName(data) {
-	return data.split('_').join(' ');
+	return data.split('_').join(' ').toLowerCase();
 }
 
 export function getDimensions(width, height) {
@@ -31,4 +31,13 @@ export function getMaxFromMultipleCategories(table) {
 		const max = table[key].reduce((acc, item) => acc > item.count ? acc : item.count, 0);
 		return (acc > max) ? acc : max;
 	}, 0);
+}
+
+export function transformFromStrToDate(data, type, callback) {
+	Object.keys(data).forEach((key) => {
+		data[key] = data[key].map(x => {
+			x[type] = callback(x[type]);
+			return x;
+		});
+	});
 }
