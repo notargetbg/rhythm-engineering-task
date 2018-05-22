@@ -25,3 +25,10 @@ export function transformTableData(data, category, column) {
 		};
 	});
 }
+
+export function getMaxFromMultipleCategories(table) {
+	return Object.keys(table).reduce((acc, key) => {
+		const max = table[key].reduce((acc, item) => acc > item.count ? acc : item.count, 0);
+		return (acc > max) ? acc : max;
+	}, 0);
+}

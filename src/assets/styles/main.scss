@@ -4,7 +4,9 @@
 
 .charts-container {
     max-width: 1600px;
-    margin: 50px auto;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .chart {
@@ -14,6 +16,12 @@
     display: inline-block;
     text-align: center;
     margin: 10px;
+    min-width: 24%;
+    transition: background-color .3s;
+
+    &:hover {
+        background-color: #fbfbfb;
+    }
     
     .chart-title {
         margin: 10px 0;
@@ -24,7 +32,6 @@
     .chart-line {
         fill: none;
         stroke-linejoin: round;
-        stroke-linecap: round;
         stroke-width: 1.5;
     }
     
@@ -62,6 +69,17 @@
         border-radius: 3px;
         margin-right: 2px;
     }
+}
+
+// Chart Summary
+.chart-summary {
+    border: 1px solid #e8e8e8;
+    box-shadow: -2px 2px 3px 0px rgba(188, 188, 188, .25);
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+    min-width: 23%;
 }
 
 // Navbar

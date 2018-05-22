@@ -1,34 +1,17 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { getColumnNames, getDimensions, transformTableData } from '../../store/helpers';
+import { getColumnNames, getDimensions, transformTableData, getMaxFromMultipleCategories } from '../../store/helpers';
 import ChartTitle from './ChartTitle';
 import ChartLegend from './ChartLegend';
 
 class LineChart extends React.Component {
     constructor(props) {
-        super(props);        
-
-        if (Array.isArray(props.data.table)) {
-            return;
-        };
-
-        const colors = ['#d63031','#94bade','#00b894','#fdcb6e','#636e72','#e17055'];
-        
-        const dataWithColors =  Object.keys(props.data.table).map((key, i) => {
-            props.data.table[key].forEach(x => x.day = this.parseShortWeekDay(x.day));
-            return {
-                items: props.data.table[key],
-                legend: {
-                    category: key,
-                    color: colors[i]
-                }
-            };
-        });
-
-        const columnNames = getColumnNames(dataWithColors[0].items[0], props.activeCategory);
+        super(props);
+        const tableKeys = Object.keys(props.data.table);        
+        const columnNames = getColumnNames(props.data.table[tableKeys[0]][0], props.activeCategory, props.activeColumn);
 
         this.state = {
-            legend: dataWithColors.map(x => x.legend),
+            colors : ['#d63031','#94bade','#00b894','#fdcb6e','#636e72','#e17055'],
             activeColumn: columnNames[0],
             dm: getDimensions(props.size[0], props.size[1])
         };
@@ -65,7 +48,7 @@ class LineChart extends React.Component {
     }
 
     updateChart() {
-        const { data, activeCategory } = this.props;
+        const { data, activeCategory, activeColumn } = this.props;
 		const svgContainer = d3.select(this.svgContainerEl);	
         const { xScale, yScale } = this.getScalesAndAxes();
 
@@ -73,43 +56,33 @@ class LineChart extends React.Component {
         const line = d3.line()
         .x(item => xScale(item.category))
         .y(item => yScale(item.data));
-        
-        // Todo: handle simple data
-        if (Array.isArray(data.table)) {
-            return;
-        };
 
-        Object.keys(data.table).map((key, i) => {
-            const tableData = transformTableData(data.table[key], activeCategory, this.state.activeColumn);
+        Object.keys(data.table).forEach((key, i) => {
+            const tableData = transformTableData(data.table[key], activeCategory, activeColumn);
 
             svgContainer.select('.chart-inner')
             .append('path')
             .datum(tableData)
             .attr('class', 'chart-line')
-            .attr('stroke', this.state.legend[i].color)
+            .attr('stroke', this.state.colors[i] )
             .attr('d', line);
            
         });
-    }
-
-    parseShortWeekDay = (day) => {
-        const parseDate = d3.timeParse('%a %V %Y');
-        return parseDate(`${day.toLowerCase()} 01 2016`);        
     }
 
     getScalesAndAxes = () => {
         const { data, activeCategory } = this.props;
         const { dm } = this.state;
 
-        if (Array.isArray(data.table)) {
-            return;
-        };
-
         const firstItem = data.table[Object.keys(data.table)[0]];
-        
-        // Todo: calculate max domain dynamically
+
+        const timeTickFormat = {
+            year: '%Y',
+            day: '%A'
+        };
+       
         const yScale = d3.scaleLinear()
-            .domain([0, 20000])
+            .domain([0, getMaxFromMultipleCategories(data.table)])
             .rangeRound([dm.innerHeight, 0]);
 
         const xScale = d3.scaleTime()
@@ -117,7 +90,7 @@ class LineChart extends React.Component {
             .rangeRound([0, dm.innerWidth]);
 
         const yAxis = d3.axisLeft(yScale);
-        const xAxis = d3.axisBottom(xScale).ticks(7, '%A');
+        const xAxis = d3.axisBottom(xScale).ticks(firstItem.length, timeTickFormat[activeCategory]);
 
         return {
             yScale,
@@ -128,12 +101,19 @@ class LineChart extends React.Component {
     }
 
     render() {
-        const [ sizeW, sizeH ] = this.props.size;
+        const [ sizeW, sizeH ] = this.props.size;   
+        
+        const legend = Object.keys(this.props.data.table).map((key, i) => {            
+            return {
+                category: key,
+                color: this.state.colors[i]
+            };
+        });
 
         return (
             <div className='chart'>
                 <ChartTitle title={this.props.chartTitle} />
-                <ChartLegend legend={this.state.legend} />
+                <ChartLegend legend={legend} />
                 <svg ref={el => this.svgContainerEl = el}
                     className='bar-chart'
                     width={sizeW} height={sizeH}>
