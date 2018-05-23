@@ -78,7 +78,7 @@ class BarChartVertical extends React.Component {
     }
 
     updateChart = () => {
-        const { dm, activeColumn } = this.state;
+        const { activeColumn } = this.state;
         const { data, activeCategory } = this.props;
         const { yAxis, yScale, xAxis, xScale } = this.getScalesAndAxes();
         const svgContainer = d3.select(this.svgContainerEl);
@@ -113,6 +113,24 @@ class BarChartVertical extends React.Component {
             .attr('transform', 'translate(20, 0)');
     }
 
+    addSummaryData = () => {
+        const { data, activeCategory } = this.props;
+        const summaryData = data.table.map(item => {
+            return {
+                category: item[activeCategory],
+                columnData: item[this.state.activeColumn]
+            }; 
+        });
+
+        const summary = {
+            activeCategory: activeCategory,
+            activeColumn: this.state.activeColumn,
+            summaryData
+        };
+
+        this.props.handleAddSummary(summary);
+    }
+
     render() {
         const [ sizeW, sizeH ] = this.props.size;
         const chartTitle = `${formatColumnName(this.state.activeColumn)} by ${this.props.activeCategory}`;
@@ -125,7 +143,7 @@ class BarChartVertical extends React.Component {
         });
 
         return (
-            <div className='chart'>
+            <div className='chart' onClick={this.addSummaryData}>
                 <ChartTitle title={chartTitle} />
                 <ChartLegend legend={legend} isVertical={true} />
                 <svg ref={el => this.svgContainerEl = el}

@@ -86,7 +86,7 @@ class BarChart extends React.Component {
         });
 
         const summary = {
-            activeCategory: [activeCategory],
+            activeCategory: activeCategory,
             activeColumn: this.state.activeColumn,
             summaryData
         };
@@ -109,7 +109,6 @@ class BarChart extends React.Component {
         bars.enter()
             .append('rect')
             // Todo move this, add proper logic
-            // Perhaps use redux in order to display the data in a separate component...
             .on('mouseover', (d) => {
                 console.log(d);
             })
@@ -156,7 +155,7 @@ class BarChart extends React.Component {
         return (
             <div className='chart' onClick={this.addSummaryData}>
                 <ChartTitle title={chartTitle} />
-                <ChartSelect columnsData={columns} handleSelection={this.setActiveColumn} {...this.props} />
+                <ChartSelect columnsData={columns} handleSelection={this.setActiveColumn} />
                 <svg ref={el => this.svgContainerEl = el}
                     className='bar-chart'
                     width={sizeW} height={sizeH}>

@@ -7,7 +7,7 @@ import ChartLegend from './ChartLegend';
 class LineChart extends React.Component {
     constructor(props) {
         super(props);
-        const tableKeys = Object.keys(props.data.table);        
+        const tableKeys = Object.keys(props.data.table);
         const columnNames = getColumnNames(props.data.table[tableKeys[0]][0], props.activeCategory, props.activeColumn);
 
         this.state = {
@@ -16,12 +16,12 @@ class LineChart extends React.Component {
             dm: getDimensions(props.size[0], props.size[1])
         };
     }
-    
+
     componentDidMount() {
         const [ sizeW, sizeH ] = this.props.size;
         const { yAxis, xAxis } = this.getScalesAndAxes();
         const dm = getDimensions(sizeW, sizeH);
-        
+
         const svgContainer = d3.select(this.svgContainerEl)
 			.append('g')
 			.attr('class', 'chart-inner')
@@ -39,7 +39,7 @@ class LineChart extends React.Component {
             .attr('class', 'axis axis--x')
             .attr('transform', `translate(0,${dm.innerHeight})`)
             .call(xAxis);
-            
+
         this.updateChart();
     }
 
@@ -49,7 +49,7 @@ class LineChart extends React.Component {
 
     updateChart() {
         const { data, activeCategory, activeColumn } = this.props;
-		const svgContainer = d3.select(this.svgContainerEl);	
+		const svgContainer = d3.select(this.svgContainerEl);
         const { xScale, yScale } = this.getScalesAndAxes();
 
         // Line generation
@@ -66,7 +66,7 @@ class LineChart extends React.Component {
             .attr('class', 'chart-line')
             .attr('stroke', this.state.colors[i] )
             .attr('d', line);
-           
+
         });
     }
 
@@ -80,7 +80,7 @@ class LineChart extends React.Component {
             year: '%Y',
             day: '%A'
         };
-       
+
         const yScale = d3.scaleLinear()
             .domain([0, getMaxFromMultipleCategories(data.table)])
             .rangeRound([dm.innerHeight, 0]);
@@ -100,10 +100,42 @@ class LineChart extends React.Component {
         };
     }
 
+    addSummaryData = () => {
+        const { data, activeCategory } = this.props;
+        const summaryDataKeys = Object.keys(data.table);
+        const timeTickFormat = {
+            year: '%Y',
+            day: '%A'
+        };
+        const dateFormat = d3.timeFormat(timeTickFormat[activeCategory]);      
+
+        const summaryCategories = summaryDataKeys.map(key => {
+            const summaryData = data.table[key].map(item => {                       
+                return {
+                    category: dateFormat(item[activeCategory]),
+                    columnData: item[this.state.activeColumn]
+                }; 
+            });
+
+            return {
+                [key]: summaryData
+            };
+        });
+
+        const summary = {
+            activeCategory,
+            activeColumn: this.state.activeColumn,
+            summaryCategories,
+            summaryDataKeys
+        };
+
+        this.props.handleAddSummary(summary);
+    }
+
     render() {
-        const [ sizeW, sizeH ] = this.props.size;   
-        
-        const legend = Object.keys(this.props.data.table).map((key, i) => {            
+        const [ sizeW, sizeH ] = this.props.size;
+
+        const legend = Object.keys(this.props.data.table).map((key, i) => {
             return {
                 category: key,
                 color: this.state.colors[i]
@@ -111,7 +143,7 @@ class LineChart extends React.Component {
         });
 
         return (
-            <div className='chart'>
+            <div className='chart' onClick={this.addSummaryData}>
                 <ChartTitle title={this.props.chartTitle} />
                 <ChartLegend legend={legend} />
                 <svg ref={el => this.svgContainerEl = el}

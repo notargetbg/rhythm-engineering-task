@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { getColumnNames, formatColumnName, getDimensions, transformTableData  } from '../../store/helpers';
+import { getColumnNames, getDimensions, transformTableData  } from '../../store/helpers';
 import ChartTitle from './ChartTitle';
 import ChartSelect from './ChartSelect';
 
@@ -113,12 +113,30 @@ class PieChart extends React.Component {
 		};
 	}
 
+	addSummaryData = () => {
+        const { data, activeCategory } = this.props;
+        const summaryData = data.table.map(item => {
+            return {
+                category: item[activeCategory],
+                columnData: item[this.state.activeColumn]
+            }; 
+        });
+
+        const summary = {
+            activeCategory: activeCategory,
+            activeColumn: this.state.activeColumn,
+            summaryData
+        };
+
+        this.props.handleAddSummary(summary);
+    }
+
 	render() {
 		const [ sizeW, sizeH ] = this.props.size;
 		const columns = getColumnNames(this.props.data.table[0], this.props.activeCategory);
 	
 		return (
-		<div className='chart'>
+		<div className='chart' onClick={this.addSummaryData}>
 			<ChartTitle title={this.props.chartTitle} />
 			<ChartSelect columnsData={columns} handleSelection={this.setActiveColumn} {...this.props} />
 			<svg ref={el => this.svgContainerEl = el}
