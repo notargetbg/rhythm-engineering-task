@@ -9,6 +9,11 @@ const summary = (state = DEFAULT_STATE, action) => {
                 data: action.payload
             };
 
+        case 'CLEAR_SUMMARY_DATA':
+            return {
+                data: null
+            };
+
         default:
             return state;
     }

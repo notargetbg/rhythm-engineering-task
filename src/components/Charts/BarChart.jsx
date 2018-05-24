@@ -108,10 +108,6 @@ class BarChart extends React.Component {
 
         bars.enter()
             .append('rect')
-            // Todo move this, add proper logic
-            .on('mouseover', (d) => {
-                console.log(d);
-            })
             .transition(t)
             .attr('class', 'bar')
             .attr('x', item => xScale(item.category))

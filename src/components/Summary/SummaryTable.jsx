@@ -18,8 +18,9 @@ class SummaryTable extends React.Component {
         
         const summaryCategoryData = summaryCategories[activeSummaryCategory];
         const summaryCategoryKey = summaryDataKeys[activeSummaryCategory];
+        const summaryCategoryItems = summaryCategoryData[summaryCategoryKey];
 
-        return summaryCategoryData[summaryCategoryKey].map((item, i) => (
+        return summaryCategoryItems.map((item, i) => (
             <SummaryItem key={i} category={item.category} value={item.columnData} />
         ));
     }
@@ -28,6 +29,10 @@ class SummaryTable extends React.Component {
         this.setState({
             activeSummaryCategory: this.props.summary.summaryDataKeys.indexOf(activeSummaryCategory)
         });
+    }
+
+    onClickClearSummary =() => {
+        this.props.handleClearSummary();
     }
 
     render() {
@@ -64,7 +69,11 @@ class SummaryTable extends React.Component {
                             Click on a chart in order to show it's summary
                         </p>
                     }
-                </div>
+
+                    {summary &&
+                        <span className='clear-summary' onClick={this.onClickClearSummary}>x</span>
+                    }
+                </div>                
             </div>
         );
     }

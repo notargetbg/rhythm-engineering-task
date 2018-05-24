@@ -7,6 +7,7 @@
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .chart {
@@ -15,7 +16,7 @@
     padding: 10px;
     display: inline-block;
     text-align: center;
-    margin: 10px;
+    margin: 10px 0;
     min-width: 24%;
     transition: background-color .3s;
 
@@ -57,6 +58,10 @@
     .input-group {
         margin: 0 auto;        
     }
+
+    &:last-of-type {
+        min-width: 49%;
+    }
 }
 
 // Chart Legend
@@ -93,9 +98,10 @@
     padding: 10px;
     display: inline-block;
     text-align: center;
-    margin: 10px;
+    margin: 10px 0;
     padding: 20px 0;
-    min-width: 23%;    
+    min-width: 24%;
+    position: relative;
 
     .item-category, .item-value {
         margin: 0 10px;
@@ -119,6 +125,10 @@
 
     .summary-table {
         height: 100%;
+        
+        .input-group {
+            margin: auto;
+        }
     }
 
     .no-summary {
@@ -127,6 +137,20 @@
         justify-content: center;
         align-items: center;
         margin-top: -20px;
+    }
+
+    .clear-summary {
+        cursor: pointer;
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        font-weight: 600;
+        background: #d63132;
+        color: white;
+        padding: 0 4px;
+        line-height: 16px;
+        border-radius: 3px;
+        font-size: 13px;
     }
 }
 
@@ -145,4 +169,45 @@
         border-radius: 4px;
     }   
     
+}
+
+@media all and (max-width: 1600px) {
+    .chart {
+        min-width: 33.333%;
+        
+        &:last-of-type {
+            min-width: 100%;
+        }
+    }
+    .chart-summary {
+        min-width: 33.333%;
+    }
+}
+
+@media all and (max-width: 1280px) {
+    .chart {
+        width: 49%;
+        
+        &:last-of-type {
+            width: 99%;
+            min-width: initial;
+        }
+    }
+    .chart-summary {
+        width: 49%;
+    }
+}
+
+@media all and (max-width: 768px) {
+    .chart {
+        width: 99%;
+        
+        &:last-of-type {
+            width: 99%;
+            min-width: initial;
+        }
+    }
+    .chart-summary {
+        width: 99%;
+    }
 }

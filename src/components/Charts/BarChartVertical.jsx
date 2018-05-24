@@ -90,10 +90,7 @@ class BarChartVertical extends React.Component {
             .data(tableData, item => item.data);
 
         bars.enter()
-            .append('rect')
-            .on('mouseover', (d) => {
-                console.log(d);
-            })
+            .append('rect')            
             .transition(t)
             .attr('class', 'bar')
             .attr('x', 0)

@@ -40,13 +40,17 @@ class ChartDataTransformer extends React.Component {
         this.props.dispatch(actions.addSummaryData(data));
     }
 
+    clearSumamry = () => {
+        this.props.dispatch(actions.clearSummaryData());
+    }
+
     render() {
         return (
             <div className='charts-container'>
                 <BarChart handleAddSummary={this.addSummary} data={alcohol_related_crash_history} activeCategory='year' size={[350,300]} />
                 <PieChart handleAddSummary={this.addSummary} data={weather_conditions} chartTitle='Total Crashes by Weather Condition' activeCategory='type' size={[350,300]} />
                 <LineChart handleAddSummary={this.addSummary} data={crashes_by_day_of_week} chartTitle={crashes_by_day_of_week.name} activeCategory='day' activeColumn='count' size={[350,300]} />
-                <SummaryTable summary={this.props.summary} />
+                <SummaryTable summary={this.props.summary} handleClearSummary={this.clearSumamry} />
                 <PieChart handleAddSummary={this.addSummary} data={lighting_conditions} chartTitle='Total Crashes by Lighting Condition' activeCategory='type' size={[350,300]} />
                 <BarChartVertical handleAddSummary={this.addSummary} data={mv_registrations} activeCategory='type' size={[350,250]} />
                 <LineChart handleAddSummary={this.addSummary} data={crash_history} chartTitle={crash_history.name} activeCategory='year' activeColumn='count' size={[750,300]} />
